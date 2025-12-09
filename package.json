@@ -1,0 +1,13 @@
+{
+    "name": "stock-dashboard",
+    "version": "1.0.0",
+    "description": "CSC313 Stock Dashboard with SSE",
+    "main": "SSEServerSideStocks.js",
+    "scripts": {
+        "start": "node SSEServerSideStocks.js"
+    },
+    "dependencies": {
+        "express": "^4.18.0",
+        "cors": "^2.8.5"
+    }
+}
