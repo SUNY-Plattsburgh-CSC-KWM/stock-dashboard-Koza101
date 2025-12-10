@@ -14,14 +14,104 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     
     <style>
-        /* We'll add CSS styling here later */
+        
     </style>
 </head>
 <body>
     <div id="root"></div>
     
     <script type="text/babel">
-        // Your React code will go here
+        function StockDashboard() {
+        
+    const [stocks, setStocks] = React.useState({
+        IBM: { ticker: 'IBM', name: 'International Business Machines', price: 0, volume: 0, priceHistory: [] },
+        AMZN: { ticker: 'AMZN', name: 'Amazon', price: 0, volume: 0, priceHistory: [] },
+        DOW: { ticker: 'DOW', name: 'Dow Jones Industrial Average', price: 0, volume: 0, priceHistory: [] },
+        NASDAQ: { ticker: 'NASDAQ', name: 'Nasdaq Composite', price: 0, volume: 0, priceHistory: [] }
+    });
+
+    React.useEffect(() => {
+    
+    const eventSource = new EventSource('http://127.0.0.1:31415/stocks');
+    
+    eventSource.onmessage = (event) => {
+        const stockData = JSON.parse(event.data);
+        console.log('Received:', stockData);
+        
+        
+        setStocks(prevStocks => {
+            const updatedStock = { ...prevStocks[stockData.ticker] };
+            updatedStock.price = stockData.price;
+            updatedStock.volume = stockData.volume;
+            
+            
+            updatedStock.priceHistory = [...updatedStock.priceHistory, stockData.price];
+            if (updatedStock.priceHistory.length > 500) {
+                updatedStock.priceHistory.shift();
+            }
+            
+            return {
+                ...prevStocks,
+                [stockData.ticker]: updatedStock
+            };
+        });
+    };
+    
+    
+    return () => {
+        eventSource.close();
+    };
+}, []);
+
+    return (
+        <div>
+            <h1>Stock Dashboard</h1>
+            <table border="1">
+                <thead>
+                    <tr>
+                        <th>Ticker</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>Volume</th>
+                        <th>Sparkline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>{stocks.IBM.ticker}</td>
+                        <td>{stocks.IBM.name}</td>
+                        <td>{stocks.IBM.price}</td>
+                        <td>{stocks.IBM.volume}</td>
+                        <td>Sparkline will go here</td>
+                    </tr>
+                    <tr>
+                        <td>{stocks.AMZN.ticker}</td>
+                        <td>{stocks.AMZN.name}</td>
+                        <td>{stocks.AMZN.price}</td>
+                        <td>{stocks.AMZN.volume}</td>
+                        <td>Sparkline will go here</td>
+                    </tr>
+                    <tr>
+                        <td>{stocks.DOW.ticker}</td>
+                        <td>{stocks.DOW.name}</td>
+                        <td>{stocks.DOW.price}</td>
+                        <td>{stocks.DOW.volume}</td>
+                        <td>Sparkline will go here</td>
+                    </tr>
+                    <tr>
+                        <td>{stocks.NASDAQ.ticker}</td>
+                        <td>{stocks.NASDAQ.name}</td>
+                        <td>{stocks.NASDAQ.price}</td>
+                        <td>{stocks.NASDAQ.volume}</td>
+                        <td>Sparkline will go here</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    );
+}
+
+ReactDOM.render(<StockDashboard />, document.getElementById('root'));
     </script>
 </body>
 </html>
