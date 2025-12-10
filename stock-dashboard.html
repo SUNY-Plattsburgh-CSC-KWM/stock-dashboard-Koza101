@@ -116,6 +116,10 @@
     return '$' + price.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     }
 
+    function formatVolume(volume) {
+    return volume.toLocaleString();
+    }
+
         function StockDashboard() {
         
     const [stocks, setStocks] = React.useState({
@@ -175,29 +179,29 @@
                     <tr>
                         <td>{stocks.IBM.ticker}</td>
                         <td>{stocks.IBM.name}</td>
-                        <td>{stocks.IBM.price}</td>
-                        <td>{stocks.IBM.volume}</td>
+                        <td>{formatPrice(stocks.IBM.price)}</td>
+                        <td>{formatVolume(stocks.IBM.volume)}</td>
                         <td><Sparkline data={stocks.IBM.priceHistory} /></td>
                     </tr>
                     <tr>
                         <td>{stocks.AMZN.ticker}</td>
                         <td>{stocks.AMZN.name}</td>
-                        <td>{stocks.AMZN.price}</td>
-                        <td>{stocks.AMZN.volume}</td>
+                        <td>{formatPrice(stocks.AMZN.price)}</td>
+                        <td>{formatVolume(stocks.AMZN.volume)}</td>
                         <td><Sparkline data={stocks.AMZN.priceHistory} /></td>
                     </tr>
                     <tr>
                         <td>{stocks.DOW.ticker}</td>
                         <td>{stocks.DOW.name}</td>
-                        <td>{stocks.DOW.price}</td>
-                        <td>{stocks.DOW.volume}</td>
+                        <td>{formatPrice(stocks.DOW.price)}</td>
+                        <td>{formatVolume(stocks.DOW.volume)}</td>
                         <td><Sparkline data={stocks.DOW.priceHistory} /></td>
                     </tr>
                     <tr>
                         <td>{stocks.NASDAQ.ticker}</td>
                         <td>{stocks.NASDAQ.name}</td>
-                        <td>{stocks.NASDAQ.price}</td>
-                        <td>{stocks.NASDAQ.volume}</td>
+                        <td>{formatPrice(stocks.NASDAQ.price)}</td>
+                        <td>{formatVolume(stocks.NASDAQ.volume)}</td>
                         <td><Sparkline data={stocks.NASDAQ.priceHistory} /></td>
                     </tr>
                 </tbody>
